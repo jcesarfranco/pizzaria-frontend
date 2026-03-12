@@ -1,7 +1,8 @@
 'use server';
 
+import { redirect } from 'next/navigation';
 import { apiClient } from '@/lib/api';
-import { setAuthToken } from '@/lib/auth';
+import { logout, setAuthToken } from '@/lib/auth';
 import type { AuthResponse, User } from '@/lib/types';
 
 export async function registerUser(
@@ -65,4 +66,9 @@ export async function loginAction(
     }
     return { success: false, error: 'Erro ao fazer login' };
   }
+}
+
+export async function logoutAction() {
+  await logout();
+  redirect('/login');
 }
