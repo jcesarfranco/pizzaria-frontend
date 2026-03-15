@@ -1,7 +1,49 @@
-export default async function Dashboard() {
+import { Tags } from 'lucide-react';
+import { CategoryForm } from '@/components/dashboard/category-form';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { apiClient } from '@/lib/api';
+import { getAuthToken } from '@/lib/auth';
+import type { Category } from '@/lib/types';
+
+export default async function Categories() {
+  const token = await getAuthToken();
+  const categories = await apiClient<Category[]>('/category', {
+    token: token!,
+  });
+
   return (
-    <div className="bg-appapp-background min-h-screen flex items-center justify-center px-4 py-8">
-      <div className="w-full">CATEGORIES</div>
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-white">
+            Categorias
+          </h1>
+          <p className="text-sm sm:text-base mt-1">Organize suas categorias</p>
+        </div>
+
+        <CategoryForm />
+      </div>
+
+      {categories.length !== 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {categories.map((category) => (
+            <Card
+              key={category.id}
+              className="bg-app-card border-app-border transition-shadow hover:shadow-md text-white"
+            >
+              <CardHeader>
+                <CardTitle className="gap-2 flex items-center text-base md:text-lg">
+                  <Tags className="w-5 h-5" />
+                  <span>{category.name}</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-200 text-sm">{category.id}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
