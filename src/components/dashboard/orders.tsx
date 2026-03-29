@@ -9,6 +9,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { apiClient } from '@/lib/api';
 import { formatPrice } from '@/lib/format';
 import type { Order } from '@/lib/types';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../ui/tooltip';
 
 interface OrdersProps {
   token: string;
@@ -63,12 +69,21 @@ export function Orders({ token }: OrdersProps) {
           </p>
         </div>
 
-        <Button
-          className="bg-brand-primary text-white hover:bg-brand-primary"
-          onClick={fetchOrders}
-        >
-          <RefreshCcw className="w-5 h-5" />
-        </Button>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                className="bg-brand-primary text-white hover:bg-brand-primary"
+                onClick={fetchOrders}
+              >
+                <RefreshCcw className="w-5 h-5" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Atualizar pedidos</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
 
       {loading ? (
