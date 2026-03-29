@@ -1,7 +1,8 @@
+import { Orders } from '@/components/dashboard/orders';
+import { getAuthToken } from '@/lib/auth';
+
 export default async function Dashboard() {
-  return (
-    <div className="bg-appapp-background min-h-screen flex items-center justify-center px-4 py-8">
-      <div className="w-full">PEDIDOS</div>
-    </div>
-  );
+  const token = await getAuthToken();
+
+  return <Orders token={token!} />;
 }
